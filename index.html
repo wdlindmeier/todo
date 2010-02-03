@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<title></title>
+		
+		<!-- Utility -->
+		<script type="text/javascript" src="javascripts/prototype.js"></script>
+		<script type="text/javascript" src="../wn_mobile/javascripts/wn.js"></script>
+		
+		<!-- JS ORM -->
+		<script type="text/javascript" src="javascripts/default_data.js"></script>
+		<script type="text/javascript" src="../wn_mobile/javascripts/wn_data_types.js"></script>
+		<script type="text/javascript" src="../wn_mobile/javascripts/wn_relationships.js"></script>
+		<script type="text/javascript" src="../wn_mobile/javascripts/wn_model.js"></script>
+		<script type="text/javascript" src="javascripts/schema.js"></script>
+	    <script type="text/javascript" src="../wn_mobile/javascripts/wn_database.js"></script>
+		<script type="text/javascript" src="../wn_mobile/javascripts/wn_db_boot.js"></script>
+		
+		<!-- Application -->
+		<script type="text/javascript" src="javascripts/todo.js"></script>
+		<script type="text/javascript" src="javascripts/behaviors.js"></script>
+		
+		<!-- Styles -->
+		<link rel="stylesheet" type="text/css" href="stylesheets/reset-min.css" /> 
+		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />	
+
+		<!-- iPhone Meta tags -->
+		<link rel="apple-touch-icon" href="images/icon.png"/>  
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="viewport" content="initial-scale=2.3, user-scalable=no" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+		
+	</head>
+	<body>
+
+		<div class="header">
+			<button class="left" id="edit_list">Edit</button>
+			<button class="right" id="add_item">+</button>
+			<h1>Todo</h1>
+		</div>
+
+		<ul class="sorting" id="sort_incomplete">
+			<li><a href="#" rel="position">Priority</a></li>
+			<li><a href="#" rel="created_at">Added</a></li>
+			<li><a href="#" rel="tag">Category</a></li>
+		</ul>
+		
+		<form action="javascript:void(Todo.createNewItem());" id="new_item_form" style="display:none;">
+            <textarea id="new_item_description" name="item[description]"></textarea>
+            <button id="cancel_new_item" onclick="Todo.cancelNewItem();return false;">Cancel</button>
+            <input type="submit" value="Create"/>
+        </form>
+
+		<ul id="tasks_incomplete"></ul>
+		
+		<div class="header">
+			<h2>Complete</h2>
+		</div>
+		
+		<ul class="sorting" id="sort_complete">
+			<li><a href="#" rel="created_at">Added</a></li>
+			<li><a href="#" rel="completed_at">Completed</a></li>
+			<li><a href="#" rel="tag">Category</a></li>			
+		</ul>
+		<ul id="tasks_complete"></ul>		
+		
+	</body>
+</html>

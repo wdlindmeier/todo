@@ -1,0 +1,35 @@
+Client Side Storage in HTML5
+=================================
+
+Overview:
+
+LocalStorage key/value pairs
+	Very similar to cookies
+	
+Cache Manifest
+
+SQLite DB
+	JS ORM 
+		Creates objects that can be saved to DB
+		Queries DB and instantiates objects
+		Manages relationships with other objects
+	Show Schema
+	Show sample data
+
+Demo:
+
+Todo List:
+	• Add entries
+	• Delete entries
+	• Toggle entry completion
+	• Reorder entries
+	
+Downfalls:
+	• Data is less portable. Usually confined to 1 browser. Makes sense for mobile devices.
+
+TODO:
+Get notes from RGA computer
+Whats the difference between localstorage and cookies?
+How do we clear cache manifest?
+How do we version DB schemas
+Does cache manifest observe directories or wildcards?
