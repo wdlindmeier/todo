@@ -5,9 +5,12 @@ Overview:
 
 LocalStorage key/value pairs
 	Very similar to cookies
+	(e.g. sort order)
+	Specific to domain, not DB
 	
 Cache Manifest
-
+	Offline apps
+	
 SQLite DB
 	JS ORM 
 		Creates objects that can be saved to DB

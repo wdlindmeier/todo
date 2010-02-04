@@ -1,9 +1,27 @@
 var Todo = {
     
+    isEditing : false,
+    
     reloadAllItems  : function(){
         Item.findAll(function(items){
-            var sorted = items.partition(function(i){ return !!i.getAttribute('completed_at'); });
-            var tasksByList = {'tasks_complete' : sorted[0], 'tasks_incomplete' : sorted[1]};
+            var sorted = items.partition(function(i){ return !i.getAttribute('completed_at'); });
+            
+            var sortOrderIncomplete = localStorage['sort_order_incomplete'] || -1;
+            var sortColumnIncomplete = localStorage['sort_column_incomplete'] || 'priority';
+
+            var sortOrderComplete = localStorage['sort_order_complete'] || -1;
+            var sortColumnComplete = localStorage['sort_column_complete'] || 'completed_at';
+            
+            var tasksByList = {
+                'tasks_incomplete' : sorted[0].sort(function(a,b){
+                    // Note: This is comparing the tag_id, not the tag.
+                    // While it lumps the tags together, it doesnt alphabetise them                            
+                    return a.getAttribute(sortColumnIncomplete) > b.getAttribute(sortColumnIncomplete) ? sortOrderIncomplete : sortOrderIncomplete * -1;
+                }), 
+                'tasks_complete' : sorted[1].sort(function(a,b){
+                    return a.getAttribute(sortColumnComplete) > b.getAttribute(sortColumnComplete) ? sortOrderComplete : sortOrderComplete * -1;
+                })
+            };
             for(var listName in tasksByList){
                 $(listName).innerHTML = '';
                 var items = tasksByList[listName];
@@ -13,6 +31,29 @@ var Todo = {
                 }
             }
         });                
+    },
+    
+    updateSortOrder : function(status, sortColumn){
+        // Remove the selected class from the existing sort button
+        var sortButton = $('sort_'+status+'_'+localStorage['sort_column_'+status]);
+        if(sortButton) sortButton.removeClassName('selected');
+
+        if(status == 'incomplete'){
+            var sortKey = 'sort_column_incomplete';
+            var orderKey = 'sort_order_incomplete';            
+        }else{
+            var sortKey = 'sort_column_complete';
+            var orderKey = 'sort_order_complete';            
+        }
+        
+        // If this is the same column that we're currently sorting on, 
+        // just reverse the direction. Else, default to -1.
+        localStorage[orderKey] = localStorage[sortKey] == sortColumn ? localStorage[orderKey] * -1 : -1;
+        localStorage[sortKey] = sortColumn;
+        
+        $('sort_'+status+'_'+localStorage['sort_column_'+status]).addClassName('selected');
+        
+        Todo.reloadAllItems();
     },
     
     makeItemEditable : function(itemID){
@@ -174,5 +215,16 @@ var Todo = {
                Todo.loadAllTags(t.getAttribute('id')); 
             });
         }       
+    },
+    
+    toggleEditingMode : function(){
+        Todo.isEditing = !Todo.isEditing;
+        if(Todo.isEditing){
+            $('edit_list').innerHTML = 'Done';
+            document.body.addClassName('editing');
+        }else{
+            $('edit_list').innerHTML = 'Edit';
+            document.body.removeClassName('editing');
+        }
     }
 }

@@ -40,9 +40,9 @@
 		</div>
 
 		<ul class="sorting" id="sort_incomplete">
-			<li><a href="#" rel="position">Priority</a></li>
-			<li><a href="#" rel="created_at">Added</a></li>
-			<li><a href="#" rel="tag">Category</a></li>
+			<li><a href="#" rel="position" id="sort_incomplete_position">Priority</a></li>
+			<li><a href="#" rel="created_at" id="sort_incomplete_created_at">Added</a></li>
+			<li><a href="#" rel="tag" id="sort_incomplete_tag_id">Category</a></li>
 		</ul>
 		
 		<div id="edit_item_form" style="display:none;">
@@ -55,18 +55,18 @@
             <button id="save_edit_item">Save</button>
         </div>
 
-		<ul id="tasks_incomplete"></ul>
+		<ul id="tasks_incomplete" class="task_list"></ul>
 		
 		<div class="header">
 			<h2>Complete</h2>
 		</div>
 		
 		<ul class="sorting" id="sort_complete">
-			<li><a href="#" rel="created_at">Added</a></li>
-			<li><a href="#" rel="completed_at">Completed</a></li>
-			<li><a href="#" rel="tag">Category</a></li>			
+			<li><a href="#" rel="completed_at" id="sort_complete_completed_at">Completed</a></li>
+			<li><a href="#" rel="created_at" id="sort_complete_created_at">Added</a></li>
+			<li><a href="#" rel="tag" id="sort_complete_tag_id">Category</a></li>			
 		</ul>
-		<ul id="tasks_complete"></ul>		
+		<ul id="tasks_complete" class="task_list"></ul>		
 		
 	</body>
 </html>

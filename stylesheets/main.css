@@ -67,3 +67,20 @@ ul.sorting{
     background-color:#666;
     color:#fff;
 }
+
+.sorting li a.selected{
+    background-color:#333;
+    color:#fff;
+}
+
+.task_list button.delete{
+    display:none;
+}
+
+.editing .task_list button.delete{
+    display:inline-block;
+}
+
+.editing #edit_list{
+    background-color:orange;
+}
