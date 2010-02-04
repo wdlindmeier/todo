@@ -1,1 +1,0 @@
-../wn_mobile/javascripts/wn_database.js

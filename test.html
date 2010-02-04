@@ -1,0 +1,136 @@
+<html>
+	<title>Test</title>
+	<script type="text/javascript" src="javascripts/prototype.js"></script>
+	<style>
+		body{
+			font-size:1.3em;
+		}
+		.dragging{
+			background-color:yellow;
+			position:absolute;
+			opacity:0.5;
+		}
+	</style>
+	
+	<meta name="viewport" content="initial-scale=2.3, user-scalable=no" />
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	
+	<body>
+		<ul id="sortable_list">
+			<li>Item 1 : position <span class="position">1<span></li>
+			<li>Item 2 : position <span class="position">2<span></li>
+			<li>Item 3 : position <span class="position">3<span></li>
+			<li>Item 4 : position <span class="position">4<span></li>
+			<li>Item 5 : position <span class="position">5<span></li>
+			<li>Item 6 : position <span class="position">6<span></li>
+			<li>Item 7 : position <span class="position">7<span></li>
+		</ul>
+		<pre id="console"></pre>
+		
+		<script>
+			$draggedElement = null;
+			$draggedOffset = {x : 0, y : 0};		
+			$draggableParentOffset = {x : 0, y : 0};
+			function setDraggedContainer(el){
+				$(el).select('li').each(function(li,i){
+					li.ontouchmove = function(e){
+						e.preventDefault();
+					}
+					li.ontouchstart = function(e){
+						e.preventDefault();						
+						setDraggedElement(this, e);
+					}
+					li.ontouchend = function(e){				
+						e.preventDefault();								
+					}				
+				});
+			}
+			function setDraggedElement(el, event){
+				$draggedElement = el;
+				$(el).addClassName('dragging');
+				var xy = el.positionedOffset();
+				$draggedOffset.x = event.touches[0].clientX - xy[0];
+				$draggedOffset.y = event.touches[0].clientY - xy[1];				
+				var xy = el.parentNode.positionedOffset();
+				var wh = el.parentNode.getDimensions();
+				$draggableParentRect = {x : xy[0], y : xy[1], w : wh.width, h : wh.height};
+			}
+			
+			function draggedPositionForEvent(e){
+				var x = e.touches[0].clientX;
+				var y = e.touches[0].clientY;
+				var elX = (x-$draggedOffset.x);
+				var elY = (y-$draggedOffset.y);								
+				return [elX, elY];									
+			}			
+			
+			function log(msg){
+				$('console').insert({top : msg + "\n"});
+			}
+			
+			document.observe('dom:loaded', function(){
+				document.ontouchmove = function(e){
+					if($draggedElement){
+						e.preventDefault();
+						var x = e.touches[0].clientX;
+						var y = e.touches[0].clientY;
+						var elX = (x-$draggedOffset.x);
+						var elY = (y-$draggedOffset.y);						
+
+						// This prevents the li from going over the edges of the container.
+						// Usability isnt that great
+/*						if(elX > $draggableParentRect.x && elY > $draggableParentRect.y &&
+						   elX < $draggableParentRect.x + $draggableParentRect.w && 
+						   elY < $draggableParentRect.y + $draggableParentRect.h){							*/
+							// Ignoring the X position
+							// $draggedElement.style.left = elX+'px';
+							$draggedElement.style.top = elY+'px';
+//						}
+					}
+				}
+				document.ontouchend = function(e){
+					if($draggedElement){
+						e.preventDefault();
+						$($draggedElement).removeClassName('dragging');
+						// Determine where the node should go
+						var next = { element : null, position : null };
+						var lis = $draggedElement.parentNode.select('li');
+						var nodesBefore = 0;
+						
+						var draggedPosition = [$draggedElement.style.left.replace('px', ''), $draggedElement.style.top.replace('px', '')];
+						
+						for(var l=0;l<lis.length;l++){
+							var li = lis[l];
+							if(li != $draggedElement){
+								var liPosition = li.positionedOffset();								
+								// Find the element that is closest to the dropped element
+								// without going over
+								if(liPosition[1] > draggedPosition[1]){									
+									if(!next.position || liPosition[1] < next.position[1]){
+										next.element = li;
+										next.position = liPosition;
+									}
+								}else{
+									nodesBefore++;
+								}
+							}
+						}		
+						// out position == nodesBefore
+						var container = $draggedElement.parentNode;
+						if(nodesBefore != 0){							
+							container.insertBefore($draggedElement, next.element);
+						}else{
+							container.insertBefore($draggedElement, container.firstChild);
+						}
+						$draggedElement.style.top = null;
+						$draggedElement.style.left = null;						
+						// Send the position to someone
+						log('new position is '+nodesBefore);
+					}					
+					$draggedElement = null;
+				}				
+				setDraggedContainer('sortable_list');
+			});			
+		</script>
+	</body>
+</html>
