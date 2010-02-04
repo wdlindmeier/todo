@@ -5,14 +5,6 @@ CACHE MANIFEST
 # the cache manifest is no longer byte-for-byte
 # identical.
 
-NETWORK:
-
-# All URLs that start with the following lines
-# are whitelisted.
-
-# Uncomment these to enable caching
-http://localhost/todo/
-
 CACHE:
 
 # Javascript
@@ -26,7 +18,15 @@ stylesheets/
 images/
 
 # HTML
+
 index.html
+
+NETWORK:
+
+# All URLs that start with the following lines
+# are whitelisted. They must not be cached
+
+http://weather.com/status
 
 FALLBACK:
 

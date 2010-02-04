@@ -1,38 +1,94 @@
 Client Side Storage in HTML5
 =================================
 
-Overview:
+• Technical trifecta:
+	> DOM Storage
+	> Cache Manifest
+	> SQLite DataBase
 
-LocalStorage key/value pairs
+• DOM Storage
+	Stores key/value strings and ONLY strings
 	Very similar to cookies
-	(e.g. sort order)
-	Specific to domain, not DB
+		Simple API (similar to object / hash)
+		Not sent to server 
+	Lots of space  (≈ 10MB per zone)
+		
+	localStorage['my_key'] = 'my_value';
+
+	localStorage.my_key;
+	=> 'my_value'
 	
-Cache Manifest
-	Offline apps
+	localStorage.removeItem('my_key');	
+--		
+	localStorage 
+		shared between windows
+		saved across sessions
+		stored indefinitely
+	sessionStorage
+		not shared between tabs
+		disappears when window closes 
 	
-SQLite DB
+• Cache Manifest
+	Gives developer control over which resources are stored locally
+	Serve as text/cache-manifest mime type
+	<html manifest="index.manifest">
+--	
+	Swap cache:
+	Automatically clears when manifest file changes
+	Dynamically:
+	window.applicationCache.updateready = function(){
+		window.applicationCache.swapCache()
+	}
+	
+• WebDB
+	Uses SQLite
+	Schema versioning
+	Execute arbitrary SQL in webkit DB console
+	Multiple databases per domain
+	Transactional, which makes code highly functional
+	Lots of space (≈ 5MB per zone)	
+--
+	
+	database = openDatabase("Database Name", '1.0');
+	database.transaction(
+   	  function (transaction) {
+		transaction.executeSql("SELECT * FROM people WHERE age > ?;", [18], 
+									// Success Handler
+									function(transaction, results){
+										for (var i=0; i<results.rows.length; i++) {
+											var row = results.rows.item(i);
+											console.log(row);
+											// { name : 'meg', age : '22' }
+										}
+									},
+									// Error Handler
+									function(transaction, errors){
+										alert("There was a DB error");
+									});
+		}
+	);
+	
+• Benefits of technology
+	Good for cross-platform mobile (no "native" storage solutions)
+	No network connection
+	No register/login for first time users
+	Take data storage burden off of backend
+	
+• Downfalls of technology
+	Data is less portable.
+	Confined to 1 browser if not synced with server.
+
+• Demo: Todo List
 	JS ORM 
 		Creates objects that can be saved to DB
 		Queries DB and instantiates objects
 		Manages relationships with other objects
-	Show Schema
-	Show sample data
+	Schema
+	Sample data
 
-Demo:
-
-Todo List:
+	• Save to phone springboard & turn on airplane mode
 	• Add entries
 	• Delete entries
 	• Toggle entry completion
+	• Sort entries (local storage)
 	• Reorder entries
-	
-Downfalls:
-	• Data is less portable. Usually confined to 1 browser. Makes sense for mobile devices.
-
-TODO:
-Get notes from RGA computer
-Whats the difference between localstorage and cookies?
-How do we clear cache manifest?
-How do we version DB schemas
-Does cache manifest observe directories or wildcards?
