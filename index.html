@@ -45,11 +45,15 @@
 			<li><a href="#" rel="tag">Category</a></li>
 		</ul>
 		
-		<form action="javascript:void(Todo.createNewItem());" id="new_item_form" style="display:none;">
-            <textarea id="new_item_description" name="item[description]"></textarea>
-            <button id="cancel_new_item" onclick="Todo.cancelNewItem();return false;">Cancel</button>
-            <input type="submit" value="Create"/>
-        </form>
+		<div id="edit_item_form" style="display:none;">
+			<input type="hidden" id="edit_item_id" value="" />
+            <textarea id="edit_item_description"></textarea>
+			<select id="edit_item_tag_id" class="taglist"></select>
+			<button id="button_remove_tag">-</button>
+			<button id="button_add_tag">+</button>
+            <button id="cancel_edit_item">Cancel</button>
+            <button id="save_edit_item">Save</button>
+        </div>
 
 		<ul id="tasks_incomplete"></ul>
 		

@@ -1,0 +1,15 @@
+TODO:
+Add tags to the mix
+	x All should be visible in form
+	x Item's tag should appear in the line item	
+	x Should create new tags with 
+	x Delete tags
+		x this should update the list
+		x Ensure items that are tagged with X dont break when tag X is destroyed
+
+Edit an item
+	x Click & hold to edit
+
+Change order of items
+
+Remove items w/ "edit" mode
