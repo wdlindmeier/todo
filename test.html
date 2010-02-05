@@ -1,48 +1,43 @@
 <html>
 	<title>Test</title>
 	<script type="text/javascript" src="javascripts/prototype.js"></script>
+	<script type="text/javascript" src="javascripts/scriptaculous.js?load=effects"></script>
 	<style>
 		body{
 			font-size:1.3em;
 		}
 
 		.dragging{
-			background-color:yellow;
-			position:absolute;
-			opacity:0.5;
-			xwidth:100%;
+			background-color:yellow !important;
+			position:relative;
+			opacity:0.75;
+			z-index:100;
 		}
 		
-		li + .dragging + li{
-			border-top:40px solid #eee;
+		.dragging .dragger{
+			background-color:#000;
 		}
-		
-		.dragging - li{
-			border-top:10px solid red;
-		}
-		
+				
 		.dragger{
-			height:40px;
-			width:40px;
+			height:30px;
+			width:30px;
 			display:block;
 			float:right;
-			xposition:absolute;
-			xtop:0;right:0;
-			text-indent:1000px;
-			background-color:#000;
+			background-color:#aaa;
 		}
 		
 		#sortable_list {
 			padding:0;margin:0;
+			background-color:#aaa;
 		}
 		
 		#sortable_list li{
-			xposition:relative;
-			height:40px;
-			xborder:1px solid #999;
+			background-color:#fff;
+			position:relative;
+			height:30px;
 			list-style:none;
 			padding:0;margin:0;
-			line-height:40px;
+			line-height:30px;
 		}
 	</style>
 	
@@ -93,9 +88,11 @@
 			$draggedElement = null;
 			$draggedOffset = {x : 0, y : 0};		
 			$draggableParentOffset = {x : 0, y : 0};
+			$draggedPosition = null;
+			$draggedDimensions = {width : 0, height : 0};
 			function setDraggedElement(el, event){
-				var elSize = el.getDimensions();
-				el.style.width = elSize.width+'px';
+				$draggedDimensions = el.getDimensions();
+				el.style.width = $draggedDimensions.width+'px';
 				$draggedElement = el;
 				$(el).addClassName('dragging');
 				var xy = el.positionedOffset();
@@ -106,36 +103,27 @@
 				$draggableParentRect = {x : xy[0], y : xy[1], w : wh.width, h : wh.height};
 			}
 			
-			function draggedPositionForEvent(e){
-				var x = e.touches[0].clientX;
-				var y = e.touches[0].clientY;
-				var elX = (x-$draggedOffset.x);
-				var elY = (y-$draggedOffset.y);								
-				return [elX, elY];									
-			}			
-			
 			function log(msg){
 				$('console').insert({top : msg + "\n"});
 			}
 			
-			function repositionDraggedElement(){
+			function repositionDraggedElement(clientY){
 				// Determine where the node should go
 				var next = { element : null, position : null };
 				var lis = $draggedElement.parentNode.select('li');
 				var nodesBefore = 0;
 				
-				var draggedPosition = [$draggedElement.style.left.replace('px', ''), $draggedElement.style.top.replace('px', '')];
-				
 				for(var l=0;l<lis.length;l++){
 					var li = lis[l];
 					if(li != $draggedElement){
-						var liPosition = li.positionedOffset();								
+						// this has to be relative to the parent
+						var liY = li.positionedOffset()[1] - $draggableParentRect.y;
+						var liDimensions = li.getDimensions();
 						// Find the element that is closest to the dropped element
-						// without going over
-						if(liPosition[1] > draggedPosition[1]){									
-							if(!next.position || liPosition[1] < next.position[1]){
+						if(liY + (liDimensions.height * 0.5) > clientY){									
+							if(!next.position || liY < next.position){
 								next.element = li;
-								next.position = liPosition;
+								next.position = liY;
 							}
 						}else{
 							nodesBefore++;
@@ -150,6 +138,7 @@
 					container.insertBefore($draggedElement, container.firstChild);
 				}
 				// Send the position to someone
+				$draggedPosition = nodesBefore;
 				log('new position is '+nodesBefore);				
 			}
 			
@@ -157,33 +146,27 @@
 				document.ontouchmove = function(e){
 					if($draggedElement){
 						e.preventDefault();
-						var x = e.touches[0].clientX;
-						var y = e.touches[0].clientY;
-						var elX = (x-$draggedOffset.x);
-						var elY = (y-$draggedOffset.y);						
+											
+						repositionDraggedElement(e.touches[0].clientY - $draggableParentRect.y);
+						
+						var y = e.touches[0].clientY - $draggableParentRect.y;
+						var elY = y - ($draggedPosition * $draggedDimensions.height) - $draggedOffset.y;
 
 						// This prevents the li from going over the edges of the container.
-						// Usability isnt that great
-/*						if(elX > $draggableParentRect.x && elY > $draggableParentRect.y &&
-						   elX < $draggableParentRect.x + $draggableParentRect.w && 
-						   elY < $draggableParentRect.y + $draggableParentRect.h){							*/
-							// Ignoring the X position
-							// $draggedElement.style.left = elX+'px';
+						if(elY <= $draggedDimensions.height && elY >= $draggedDimensions.height * -1){
 							$draggedElement.style.top = elY+'px';
-//						}
-						repositionDraggedElement();
+						}
+						repositionDraggedElement(e.touches[0].clientY - $draggableParentRect.y);
 					}
 				}
 				document.ontouchend = function(e){
 					if($draggedElement){
 						e.preventDefault();
-
-						repositionDraggedElement();
-						
 						$($draggedElement).removeClassName('dragging');						
 						$draggedElement.style.top = null;
 						$draggedElement.style.left = null;						
 						$draggedElement.style.width = null;
+						new Effect.Highlight($draggedElement, { startcolor : '#ffff00', duration : 0.2});
 					}					
 					$draggedElement = null;
 				}				
