@@ -32,12 +32,13 @@
 		}
 		
 		#sortable_list li{
-			background-color:#fff;
+			background-color:#eee;
 			position:relative;
 			height:30px;
 			list-style:none;
 			padding:0;margin:0;
 			line-height:30px;
+			border-bottom:1px solid #fff;
 		}
 	</style>
 	
@@ -46,37 +47,37 @@
 	
 	<body>
 		<ul id="sortable_list">
-			<li>
+			<li class="draggable">
 				Item 1 : position 
 				<span class="position">1</span>
 				<span class="dragger"></span> 
 			</li>
-			<li>
+			<li class="draggable">
 				Item 2 : position 
 				<span class="position">1</span>
 				<span class="dragger"></span> 
 			</li>
-			<li>
+			<li class="draggable">
 				Item 3 : position 
 				<span class="position">1</span>
 				<span class="dragger"></span> 
 			</li>
-			<li>
+			<li class="draggable">
 				Item 4 : position 
 				<span class="position">1</span>
 				<span class="dragger"></span> 
 			</li>
-			<li>
+			<li class="draggable">
 				Item 5 : position 
 				<span class="position">1</span>
 				<span class="dragger"></span> 
 			</li>
-			<li>
+			<li class="draggable">
 				Item 6 : position 
 				<span class="position">1</span>
 				<span class="dragger"></span> 
 			</li>
-			<li>
+			<li class="draggable">
 				Item 7 : position 
 				<span class="position">1</span>
 				<span class="dragger"></span> 
@@ -142,16 +143,22 @@
 				log('new position is '+nodesBefore);				
 			}
 			
+			function resetPositions(draggable){
+				var items = draggable.parentNode.select('.draggable');
+				for(var i=0;i<items.length;i++){
+					var item = items[i];
+					item.select('.position')[0].innerHTML = i;
+					// And do some other stuff!
+				}
+			}
+			
 			document.observe('dom:loaded', function(){
 				document.ontouchmove = function(e){
 					if($draggedElement){
-						e.preventDefault();
-											
-						repositionDraggedElement(e.touches[0].clientY - $draggableParentRect.y);
-						
+						e.preventDefault();											
+						repositionDraggedElement(e.touches[0].clientY - $draggableParentRect.y);						
 						var y = e.touches[0].clientY - $draggableParentRect.y;
 						var elY = y - ($draggedPosition * $draggedDimensions.height) - $draggedOffset.y;
-
 						// This prevents the li from going over the edges of the container.
 						if(elY <= $draggedDimensions.height && elY >= $draggedDimensions.height * -1){
 							$draggedElement.style.top = elY+'px';
@@ -172,17 +179,19 @@
 				}				
 				
 				// Observe the drag
-				$$('.dragger').each(function(el,i){
-					el.ontouchmove = function(e){
+				$$(".draggable").each(function(draggable,i){
+					var dragger = draggable.select('.dragger')[0];
+					dragger.ontouchmove = function(e){
 						e.preventDefault();
-					}
-					el.ontouchstart = function(e){
+					}.bind(this);
+					dragger.ontouchstart = function(e){
 						e.preventDefault();						
-						setDraggedElement(this.parentNode, e);
-					}
-					el.ontouchend = function(e){				
-						e.preventDefault();								
-					}				
+						setDraggedElement(draggable, e);
+					}.bind(this);
+					dragger.ontouchend = function(e){				
+						e.preventDefault();
+						resetPositions(draggable);
+					}.bind(this);	
 				});
 				
 			});			
