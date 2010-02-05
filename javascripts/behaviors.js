@@ -8,11 +8,13 @@ document.observe('dom:loaded', function(){
     
     // Shows the new item form
     $('add_item').observe('click', function(){
+        if(Todo.isEditing) Todo.toggleEditingMode();
         Todo.showNewForm();
     });
 
     // Enter/exit edit mode
     $('edit_list').observe('click', function(){
+        Todo.cancelEditItem();
         Todo.toggleEditingMode();
     });
 

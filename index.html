@@ -1,7 +1,10 @@
-<html> <!-- manifest="index.manifest"-->
+<html> <!-- manifest="index.manifest" -->
 	<head>
 		<title>Todo</title>
-				
+
+		<!-- Manifest TEST -->		
+		<!-- script type="text/javascript" src="javascripts/test.js"></script -->
+		
 		<!-- Utility -->
 		<script type="text/javascript" src="javascripts/prototype.js"></script>
 		<script type="text/javascript" src="javascripts/scriptaculous.js?load=effects"></script>
@@ -20,13 +23,17 @@
 		<script type="text/javascript" src="javascripts/todo.js"></script>
 		<script type="text/javascript" src="javascripts/behaviors.js"></script>
 		<script type="text/javascript" src="javascripts/sortable_list.js"></script>
+		<script>
+			// Uncomment to clear the DB.
+			// WNDB.resetDatabase();
+		</script>
 		
 		<!-- Styles -->
 		<link rel="stylesheet" type="text/css" href="stylesheets/reset-min.css" /> 
 		<link rel="stylesheet" type="text/css" href="stylesheets/main.css" />	
 
 		<!-- iPhone Meta tags -->
-		<link rel="apple-touch-icon" href="images/icon.png"/>  
+		<link rel="apple-touch-icon" href="images/Icon.png"/>  
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 		<meta name="viewport" content="initial-scale=2.3, user-scalable=no" />
@@ -49,12 +56,18 @@
 		
 		<div id="edit_item_form" style="display:none;">
 			<input type="hidden" id="edit_item_id" value="" />
-            <textarea id="edit_item_description"></textarea>
-			<select id="edit_item_tag_id" class="taglist"></select>
-			<button id="button_remove_tag">-</button>
-			<button id="button_add_tag">+</button>
-            <button id="cancel_edit_item">Cancel</button>
-            <button id="save_edit_item">Save</button>
+			<fieldset  class="form_input_set">
+            	<textarea id="edit_item_description"></textarea>
+			</fieldset>
+			<fieldset class="form_tag_set">
+				<select id="edit_item_tag_id" class="taglist"></select>
+				<button id="button_remove_tag">-</button>
+				<button id="button_add_tag">+</button>
+			</fieldset>
+			<fieldset class="form_submit_set">
+            	<button id="cancel_edit_item">Cancel</button>
+            	<button id="save_edit_item">Save</button>
+			</fieldset>
         </div>
 
 		<ul id="tasks_incomplete" class="task_list sortable_list"></ul>

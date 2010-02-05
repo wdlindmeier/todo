@@ -3,7 +3,7 @@ var WNDBFixtures = {
             name : "DESIGN"
         },
         {
-            name : "DEVELOPMENT"
+            name : "DEV"
         },
         {
             name : "BUG"

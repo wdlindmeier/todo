@@ -64,7 +64,7 @@ ul.sorting{
 }
 
 .sorting li a:active{
-    background-color:#666;
+    background-color:#6699ff;
     color:#fff;
 }
 
@@ -73,16 +73,55 @@ ul.sorting{
     color:#fff;
 }
 
+/* Task List Items */
+
+.task_list .item_description{
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    position:absolute;
+    text-indent:10px;
+    z-index:1;
+    margin-top:-5px;
+}
+
+.task_list .detail{
+    position:relative;
+    top:10px;
+    left:10px;
+    font-size:10px;
+    color:#666;
+    display:none;
+}
+
+.sortby_position .position, .sortby_tag_id .tag, .sortby_created_at .created_at, .sortby_completed_at .completed_at{
+    display:inline-block;
+}
+
+.task_list button
+{
+    text-align:center;
+    padding:0;
+}
+
 .task_list button.delete{
     display:none;
+}
+
+.task_list button.complete{
+    display:inline-block;
 }
 
 .editing .task_list button.delete{
     display:inline-block;
 }
 
+.editing .task_list button.complete{
+    display:none;
+}
+
 .editing #edit_list{
-    background-color:orange;
+    background-color:yellow;
+    color:#000;
 }
 
 /* Sortable lists */
@@ -90,7 +129,7 @@ ul.sorting{
 .sortable_list li{
     min-height:45px;
 	position:relative;
-	border-bottom:1px solid blue;
+	border-bottom:1px dotted #9999ff;
 	line-height:45px;
 }
 
@@ -101,14 +140,47 @@ ul.sorting{
 	z-index:100;
 }
 
-.dragging .dragger{
-	background-color:#000;
-}
-		
 .dragger{
-	display:block;
-	float:right;
+    position:absolute;
+    right:0;
+	top:0;
 	background-color:#aaa;
 	height:45px;
 	width:45px;
+	display:none;
+	z-index:1;
+	text-align:center;
+	line-height:45px;
+	color:#ccc;
+	text-shadow:0 0 3px #666;
+	font-size:30px;
+}
+
+.dragging .dragger{
+	background-color:#000;
+	z-index:100001 !important;
+}		
+
+.editing .dragger{
+    display:block;
+}
+
+/* Form */
+
+#edit_item_form{
+    background-color:#eee;
+    padding-bottom:10px;
+}
+
+#edit_item_form textarea{
+    display:block;
+    width:100%;
+}
+
+#edit_item_form fieldset{
+    margin:10px;   
+}
+
+fieldset.form_submit_set{
+    text-align:right;
 }

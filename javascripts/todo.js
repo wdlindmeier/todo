@@ -6,11 +6,17 @@ var Todo = {
         Item.findAll(function(items){
             var sorted = items.partition(function(i){ return !i.getAttribute('completed_at'); });
             
-            var sortOrderIncomplete = localStorage['sort_order_incomplete'] || -1;
-            var sortColumnIncomplete = localStorage['sort_column_incomplete'] || 'priority';
+            if(!localStorage['sort_order_incomplete']) localStorage['sort_order_incomplete'] = -1;
+            var sortOrderIncomplete = localStorage['sort_order_incomplete'];
+            
+            if(!localStorage['sort_column_incomplete']) localStorage['sort_column_incomplete'] = 'position';
+            var sortColumnIncomplete = localStorage['sort_column_incomplete'];
 
-            var sortOrderComplete = localStorage['sort_order_complete'] || -1;
-            var sortColumnComplete = localStorage['sort_column_complete'] || 'completed_at';
+            if(!localStorage['sort_order_complete']) localStorage['sort_order_complete'] = -1;
+            var sortOrderComplete = localStorage['sort_order_complete'];
+            
+            if(!localStorage['sort_column_complete']) localStorage['sort_column_complete'] = 'completed_at';
+            var sortColumnComplete = localStorage['sort_column_complete'];
             
             var tasksByList = {
                 'tasks_incomplete' : sorted[0].sort(function(a,b){
@@ -22,6 +28,7 @@ var Todo = {
                     return a.getAttribute(sortColumnComplete) > b.getAttribute(sortColumnComplete) ? sortOrderComplete : sortOrderComplete * -1;
                 })
             };
+            
             for(var listName in tasksByList){
                 $(listName).innerHTML = '';
                 var items = tasksByList[listName];
@@ -31,6 +38,8 @@ var Todo = {
                 }
             }
             
+            Todo.updateSortColumns();
+            
             observeDraggableElements(function(draggedElement){
                 var items = draggedElement.parentNode.select('.draggable');
             	for(var i=0;i<items.length;i++){
@@ -38,18 +47,39 @@ var Todo = {
             		var itemID = itemLi.id.replace('item_', '');
             		var item = Item.recordGraph()[itemID];
             		item.setAttribute('position', i);
-            		item.save(function(record){ console.log('set position '+record.getAttribute('position'))});
+            		item.save(function(record){ 
+            		    // console.log('set position '+record.getAttribute('position'))
+            		});
             	}
             });
             
         });                
     },
     
+    updateSortColumns : function(){
+        $$('.sorting .selected').each(function(el,i){
+            el.removeClassName('selected');
+        });
+        var sortColumnComplete = localStorage['sort_column_complete'];
+        $('sort_complete_'+sortColumnComplete).addClassName('selected');
+        
+        var sortColumnIncomplete = localStorage['sort_column_incomplete'];
+        $('sort_incomplete_'+sortColumnIncomplete).addClassName('selected');
+        
+        if($('tasks_incomplete').className.indexOf('sortby_') != -1){
+            $('tasks_incomplete').className = $('tasks_incomplete').className.replace(/sortby_\S+/, 'sortby_'+sortColumnIncomplete);
+        }else{
+            $('tasks_incomplete').addClassName('sortby_'+sortColumnIncomplete);
+        }
+        
+        if($('tasks_incomplete').className.indexOf('sortby_') != -1){
+            $('tasks_complete').className = $('tasks_incomplete').className.replace(/sortby_\S+/, 'sortby_'+sortColumnComplete);
+        }else{
+            $('tasks_complete').addClassName('sortby_'+sortColumnComplete);
+        }
+    },
+    
     updateSortOrder : function(status, sortColumn){
-        // Remove the selected class from the existing sort button
-        var sortButton = $('sort_'+status+'_'+localStorage['sort_column_'+status]);
-        if(sortButton) sortButton.removeClassName('selected');
-
         if(status == 'incomplete'){
             var sortKey = 'sort_column_incomplete';
             var orderKey = 'sort_order_incomplete';            
@@ -62,8 +92,6 @@ var Todo = {
         // just reverse the direction. Else, default to -1.
         localStorage[orderKey] = localStorage[sortKey] == sortColumn ? localStorage[orderKey] * -1 : -1;
         localStorage[sortKey] = sortColumn;
-        
-        $('sort_'+status+'_'+localStorage['sort_column_'+status]).addClassName('selected');
         
         Todo.reloadAllItems();
     },
@@ -90,17 +118,7 @@ var Todo = {
         var li = document.createElement('li');
         li.setAttribute('id', 'item_'+itemID);
         li.className = 'draggable';
-        li.onmousedown = function(e){
-            Todo.isTouchingItem = true;
 
-            document.onmouseup = function(e){
-                Todo.isTouchingItem = false;
-                document.onmouseup = null;
-            }            
-            
-            setTimeout("Todo.makeItemEditable("+itemID+")", 600);                        
-        }
-        
         var buttonDelete = document.createElement('button');
         buttonDelete.className = 'delete';
         buttonDelete.onclick = function(e){ Todo.confirmDeleteForItem(itemID); return false; }.bind(this);
@@ -112,24 +130,61 @@ var Todo = {
         buttonComplete.onclick = function(e){ Todo.markItemAsComplete(itemID); return false; }.bind(this);
         buttonComplete.innerHTML = '&#10004;';
         li.appendChild(buttonComplete);
+                   
+        // Description
+        var spanDescription = document.createElement('span');
+        spanDescription.className = 'item_description';
+        spanDescription.innerHTML = item.getAttribute('description');
+        li.appendChild(spanDescription);
         
+        // Enter editing mode when description is held-down
+        var touchdownevent = function(e){            
+            Todo.isTouchingItem = true;
+            var touchendevent = function(e){
+                Todo.isTouchingItem = false;
+                document.onmouseup = null;
+            }
+            if(Prototype.Browser.MobileSafari) document.ontouchend = touchendevent;
+            else document.onmouseup = touchendevent;
+            setTimeout("Todo.makeItemEditable("+itemID+")", 600);                        
+        }
+        if(Prototype.Browser.MobileSafari) spanDescription.ontouchstart = touchdownevent;
+        else spanDescription.onmousedown = touchdownevent;                
+
+
+        // Tag
         var tagID = item.getAttribute('tag_id');
         var tag = Tag.recordGraph()[tagID];
         if(tag){
             var spanTag = document.createElement('span');
-            spanTag.className = 'tag';
+            spanTag.className = 'tag detail';
             spanTag.innerHTML = tag.getAttribute('name');
             li.appendChild(spanTag);
         }
         
-        var spanDescription = document.createElement('span');
-        spanDescription.className = 'item_description';
-        spanDescription.innerHTML = item.getAttribute('description');
-        li.appendChild(spanDescription);        
-
+        // Created at
+        var createdAt = item.getAttribute('created_at');
+        if(createdAt){
+            var spanCreated = document.createElement('span');
+            spanCreated.className = 'created_at detail';
+            spanCreated.innerHTML = createdAt.toString();
+            li.appendChild(spanCreated);
+        }
+        
+        // Completed at
+        var completedAt = item.getAttribute('completed_at');
+        if(completedAt){
+            var spanCompleted = document.createElement('span');
+            spanCompleted.className = 'completed_at detail';
+            spanCompleted.innerHTML = completedAt.toString();
+            li.appendChild(spanCompleted);     
+        }
+        
+        // Add position dragger
         var spanDragger = document.createElement('span');
         spanDragger.className = 'dragger';
-        li.appendChild(spanDragger);                
+        spanDragger.innerHTML = '&#8801;';
+        li.appendChild(spanDragger);
 
         return li;
     },
@@ -202,7 +257,7 @@ var Todo = {
     
     loadAllTags : function(selectedTagId){
         Tag.findAll(function(tags){
-            var options = ['<option value="">[ none ]</option>'];
+            var options = ['<option value="">[ tag ]</option>'];
             for(var t=0;t<tags.length;t++){
                 var tag = tags[t];
                 options.push('<option value="'+tag.getAttribute('id')+'">'+tag.getAttribute('name')+'</option>')
