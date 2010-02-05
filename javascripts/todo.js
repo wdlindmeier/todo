@@ -30,6 +30,18 @@ var Todo = {
                     $(listName).appendChild(Todo.listItemForItem(item));
                 }
             }
+            
+            observeDraggableElements(function(draggedElement){
+                var items = draggedElement.parentNode.select('.draggable');
+            	for(var i=0;i<items.length;i++){
+            		var itemLi = items[i];
+            		var itemID = itemLi.id.replace('item_', '');
+            		var item = Item.recordGraph()[itemID];
+            		item.setAttribute('position', i);
+            		item.save(function(record){ console.log('set position '+record.getAttribute('position'))});
+            	}
+            });
+            
         });                
     },
     
@@ -77,15 +89,16 @@ var Todo = {
         var itemID = item.getAttribute('id');
         var li = document.createElement('li');
         li.setAttribute('id', 'item_'+itemID);
-
+        li.className = 'draggable';
         li.onmousedown = function(e){
             Todo.isTouchingItem = true;
-            setTimeout("Todo.makeItemEditable("+itemID+")", 600);
-        }
 
-        document.onmouseup = function(e){
-            Todo.isTouchingItem = false;
-            document.onmouseup = null;
+            document.onmouseup = function(e){
+                Todo.isTouchingItem = false;
+                document.onmouseup = null;
+            }            
+            
+            setTimeout("Todo.makeItemEditable("+itemID+")", 600);                        
         }
         
         var buttonDelete = document.createElement('button');
@@ -108,10 +121,16 @@ var Todo = {
             spanTag.innerHTML = tag.getAttribute('name');
             li.appendChild(spanTag);
         }
+        
         var spanDescription = document.createElement('span');
         spanDescription.className = 'item_description';
         spanDescription.innerHTML = item.getAttribute('description');
         li.appendChild(spanDescription);        
+
+        var spanDragger = document.createElement('span');
+        spanDragger.className = 'dragger';
+        li.appendChild(spanDragger);                
+
         return li;
     },
     

@@ -84,3 +84,31 @@ ul.sorting{
 .editing #edit_list{
     background-color:orange;
 }
+
+/* Sortable lists */
+
+.sortable_list li{
+    min-height:45px;
+	position:relative;
+	border-bottom:1px solid blue;
+	line-height:45px;
+}
+
+.dragging{
+	background-color:yellow !important;
+	position:relative;
+	opacity:0.75;
+	z-index:100;
+}
+
+.dragging .dragger{
+	background-color:#000;
+}
+		
+.dragger{
+	display:block;
+	float:right;
+	background-color:#aaa;
+	height:45px;
+	width:45px;
+}

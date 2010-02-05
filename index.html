@@ -1,13 +1,10 @@
-<html manifest="index.manifest">
+<html> <!-- manifest="index.manifest"-->
 	<head>
-		<title></title>
-		
-		<!-- TEST -->
-		<script type="text/javascript" src="javascripts/test.js"></script>
-		
+		<title>Todo</title>
+				
 		<!-- Utility -->
 		<script type="text/javascript" src="javascripts/prototype.js"></script>
-		<script type="text/javascript" src="javascripts/scriptaculous.js?load=effects,dragdrop"></script>
+		<script type="text/javascript" src="javascripts/scriptaculous.js?load=effects"></script>
 		<script type="text/javascript" src="../wn_mobile/javascripts/wn.js"></script>
 		
 		<!-- JS ORM -->
@@ -22,6 +19,7 @@
 		<!-- Application -->
 		<script type="text/javascript" src="javascripts/todo.js"></script>
 		<script type="text/javascript" src="javascripts/behaviors.js"></script>
+		<script type="text/javascript" src="javascripts/sortable_list.js"></script>
 		
 		<!-- Styles -->
 		<link rel="stylesheet" type="text/css" href="stylesheets/reset-min.css" /> 
@@ -59,7 +57,7 @@
             <button id="save_edit_item">Save</button>
         </div>
 
-		<ul id="tasks_incomplete" class="task_list"></ul>
+		<ul id="tasks_incomplete" class="task_list sortable_list"></ul>
 		
 		<div class="header">
 			<h2>Complete</h2>
@@ -70,7 +68,7 @@
 			<li><a href="#" rel="created_at" id="sort_complete_created_at">Added</a></li>
 			<li><a href="#" rel="tag" id="sort_complete_tag_id">Category</a></li>			
 		</ul>
-		<ul id="tasks_complete" class="task_list"></ul>		
+		<ul id="tasks_complete" class="task_list sortable_list"></ul>		
 		
 	</body>
 </html>
