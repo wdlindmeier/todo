@@ -16,22 +16,37 @@ h2{ font-size:20px; }
     color:#fff;
     background-color:#444;
     text-align:center;
-    line-height:40px;
+    line-height:40px;	
+	background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#333));
+	border-top:1px solid #888;
 }
 
 .header button{
     cursor:pointer;
     position:absolute;
     z-index:100;
+}
+
+.header button{
     display:inline-block;
     height:30px;
     background-color:#ddd;    
     border:none;
-    color:#666;
+    color:#444;
+	text-shadow:0 1px 1px #fff;
     font-weight:bold;
     padding:0 10px;
     -webkit-border-radius:5px;
     top:5px;
+	border-top:1px solid #fff;
+	-webkit-box-shadow:0 1px 1px #000;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#bbb));
+}
+
+.editing button#edit_list{
+    color:#fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#69f), to(#36c));
+	text-shadow:none; /*0 1px 1px #000;*/
 }
 
 .header button.left{
@@ -46,13 +61,19 @@ ul.sorting{
     display:table;
     width:100%;
     background-color:#aaa;
+	-webkit-box-shadow:0px 3px 3px #aaa;
 }
 
 .sorting li{
     display:table-cell;
     width:33%;
     text-align:center;
-    line-height:30px;    
+    line-height:30px;
+	position:relative;
+}
+
+.sorting li:last-child a{
+	width:100%;
 }
 
 .sorting li a{
@@ -69,7 +90,7 @@ ul.sorting{
 }
 
 .sorting li a.selected{
-    background-color:#444;
+    background-color:#333;
     color:#fff;
 }
 
@@ -150,17 +171,13 @@ ul.sorting{
     display:none;
 }
 
-.editing #edit_list{
-    background-color:yellow;
-    color:#000;
-}
-
 /* Sortable lists */
 
 .sortable_list li{
     min-height:45px;
 	position:relative;
-	border-bottom:1px dotted #9999ff;
+	xborder-bottom:1px dotted #9999ff;
+	-webkit-box-shadow:0 3px 3px #ccc;
 }
 
 .dragging{
