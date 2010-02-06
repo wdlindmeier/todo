@@ -1,10 +1,13 @@
 Client Side Storage in HTML5
 =================================
 
-• Technical trifecta:
-	> DOM Storage
+• Technical trifecta: (not all in HTML5 spec)
+	> DOM Storage 
 	> Cache Manifest
 	> SQLite DataBase
+	
+	(Available in Safari, Mobile Safari, Android) (Chrome / Opera support coming)
+	No Firefox, IE support, which makes it a good technology for mobile
 
 • DOM Storage
 	Stores key/value strings and ONLY strings
@@ -70,8 +73,9 @@ Client Side Storage in HTML5
 	
 • Benefits of technology
 	Good for cross-platform mobile (no "native" storage solutions)
-	No network connection
+	No network connection, good for offline apps!
 	No register/login for first time users
+	--> Quick content load <--
 	Take data storage burden off of backend
 	
 • Downfalls of technology
@@ -87,7 +91,7 @@ Client Side Storage in HTML5
 	Sample data
 
 	• Save to phone springboard & turn on airplane mode
-	• Add entries
+	• Add entries (run query in DB browser)
 	• Delete entries
 	• Toggle entry completion
 	• Sort entries (local storage)

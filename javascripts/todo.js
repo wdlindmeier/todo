@@ -6,7 +6,7 @@ var Todo = {
         Item.findAll(function(items){
             var sorted = items.partition(function(i){ return !i.getAttribute('completed_at'); });
             
-            if(!localStorage['sort_order_incomplete']) localStorage['sort_order_incomplete'] = -1;
+            if(!localStorage['sort_order_incomplete']) localStorage['sort_order_incomplete'] = 1;
             var sortOrderIncomplete = localStorage['sort_order_incomplete'];
             
             if(!localStorage['sort_column_incomplete']) localStorage['sort_column_incomplete'] = 'position';
@@ -57,15 +57,17 @@ var Todo = {
     },
     
     updateSortColumns : function(){
+	
         $$('.sorting .selected').each(function(el,i){
             el.removeClassName('selected');
         });
+
         var sortColumnComplete = localStorage['sort_column_complete'];
         $('sort_complete_'+sortColumnComplete).addClassName('selected');
         
         var sortColumnIncomplete = localStorage['sort_column_incomplete'];
         $('sort_incomplete_'+sortColumnIncomplete).addClassName('selected');
-        
+
         if($('tasks_incomplete').className.indexOf('sortby_') != -1){
             $('tasks_incomplete').className = $('tasks_incomplete').className.replace(/sortby_\S+/, 'sortby_'+sortColumnIncomplete);
         }else{
@@ -77,6 +79,10 @@ var Todo = {
         }else{
             $('tasks_complete').addClassName('sortby_'+sortColumnComplete);
         }
+
+		$$('#sort_complete_'+sortColumnComplete+' .order')[0].setAttribute('rel', localStorage['sort_order_complete'] == 1 ? 'ASC' : 'DESC');
+		$$('#sort_incomplete_'+sortColumnIncomplete+' .order')[0].setAttribute('rel', localStorage['sort_order_incomplete'] == 1 ?  'ASC' : 'DESC');
+        
     },
     
     updateSortOrder : function(status, sortColumn){

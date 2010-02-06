@@ -1,36 +1,34 @@
 TODO:
+Sorting list doesnt take into account a long li
+New tags get random color
+New items should get position at the end of the list (autoincrement?)
+tag order should be name, not id
+dragging li's positions should take the sort order into account (ASC or DESC)
+Clicking to reorder the items is a little annoying... although, an apple standard
 
+COMPLETED:
+====================
+x Allow for long descriptions
+x Add sort order triangles
 x Only allow dragging on edit
 	x show delete button, hide complete button
-
 x Style
 	x truncate info FTTB
-
 x There should be priority/timestamp data on rows, so sorting makes sense
-
 x Add sample data 
-
 x Add app to iphone springboard
-
 x Test cache manifest
-
 x Show selected column on load
-
 x Change position of items
 	Whenever an item is added to the list, the draggable behavior must be picked up
-	
 x Remove items w/ "edit" mode
-
 Add tags to the mix
 	x All should be visible in form
 	x Item's tag should appear in the line item	
 	x Should create new tags with 
 	x Delete tags
 		x this should update the list
-		x Ensure items that are tagged with X dont break when tag X is destroyed
-		
+		x Ensure items that are tagged with X dont break when tag X is destroyed		
 Edit an item
 	x Click & hold to edit
-
 x Add sorting
-

@@ -1,3 +1,4 @@
+$IS_IPHONE = Prototype.Browser.MobileSafari;
 $draggedElement = null;
 $draggedOffset = {x : 0, y : 0};		
 $draggableParentOffset = {x : 0, y : 0};
@@ -6,12 +7,13 @@ $draggedDimensions = {width : 0, height : 0};
 
 function setDraggedElement(el, event){
 	$draggedDimensions = el.getDimensions();
-	el.style.width = $draggedDimensions.width+'px';
 	$draggedElement = el;
 	$(el).addClassName('dragging');
 	var xy = el.positionedOffset();
-	$draggedOffset.x = event.touches[0].clientX - xy[0];
-	$draggedOffset.y = event.touches[0].clientY - xy[1];				
+	var pointX = $IS_IPHONE ? event.touches[0].clientX : event.pointerX();
+	var pointY = $IS_IPHONE ? event.touches[0].clientY : event.pointerY();
+	$draggedOffset.x = pointX - xy[0];
+	$draggedOffset.y = pointY - xy[1];
 	var xy = el.parentNode.positionedOffset();
 	var wh = el.parentNode.getDimensions();
 	$draggableParentRect = {x : xy[0], y : xy[1], w : wh.width, h : wh.height};
@@ -60,47 +62,70 @@ function observeDraggableElements(callbackHandler){
     		dragger.ontouchmove = function(e){
     			e.preventDefault();
     		}.bind(this);
+			if(!$IS_IPHONE) dragger.onmousemove = dragger.ontouchmove;
+			
     		dragger.ontouchstart = function(e){
     			e.preventDefault();
     			setDraggedElement(draggable, e);
     		}.bind(this);
+			if(!$IS_IPHONE) dragger.onmousedown = dragger.ontouchstart;
+
     		dragger.ontouchend = function(e){				
     			e.preventDefault();
     			callbackHandler(draggable);
     		}.bind(this);	
+			if(!$IS_IPHONE) dragger.onmouseup = dragger.ontouchend;
 		}
 	}.bind(this));	
 }
 
 document.observe('dom:loaded', function(){
-    // TODO: Does observing the touchmove event work in iPhone?
-    // e.g. document.observe('touchmove', function(e){
-	document.ontouchmove = function(e){
-		if($draggedElement){
-			e.preventDefault();											
-			repositionDraggedElement(e.touches[0].clientY - $draggableParentRect.y);						
-			var y = e.touches[0].clientY - $draggableParentRect.y;
-			var elY = y - ($draggedPosition * $draggedDimensions.height) - $draggedOffset.y;
-			// This prevents the li from going over the edges of the container.
-			if(elY <= $draggedDimensions.height && elY >= $draggedDimensions.height * -1){
-				$draggedElement.style.top = elY+'px';
+	document.ontouchstart = function(){	
+		// Only observe the mouse move when the mouse is down
+		document.ontouchmove = function(e){
+			if($draggedElement){			
+				var pointY = $IS_IPHONE ? e.touches[0].clientY : e.pointerY();
+				e.preventDefault();											
+				repositionDraggedElement(pointY - $draggableParentRect.y);						
+				var y = pointY - $draggableParentRect.y;
+				var elY = y - ($draggedPosition * $draggedDimensions.height) - $draggedOffset.y;
+				// This prevents the li from going over the edges of the container.
+				if(elY <= $draggedDimensions.height && elY >= $draggedDimensions.height * -1){
+					$draggedElement.style.top = elY+'px';
+				}
 			}
-			repositionDraggedElement(e.touches[0].clientY - $draggableParentRect.y);
 		}
 	}
-	
+
 	document.ontouchend = function(e){
 		if($draggedElement){
-			e.preventDefault();
+			e.preventDefault();											
 			$($draggedElement).removeClassName('dragging');						
 			$draggedElement.style.top = null;
 			$draggedElement.style.left = null;						
-			$draggedElement.style.width = null;
-			new Effect.Highlight($draggedElement, { startcolor : '#ffff00', duration : 0.2});
+			new Effect.Highlight($draggedElement, { startcolor : '#ffff00', restorecolor: 'none', duration : 0.2, afterFinish : function(e){
+				e.element.style.backgroundColor = null;
+			}});
 		}					
 		$draggedElement = null;
-	}					
+		// Stop observing the move event
+		document.ontouchmove = null;
+	}	
 	
 	observeDraggableElements();
 	
 });
+
+if(!$IS_IPHONE){
+	// Create some compatability event handlers 
+	document.onmouseup = function(e){
+		document.ontouchend(e);
+	}
+	document.onmousedown = function(e){
+		document.ontouchstart(e);
+	}
+	document.onmousemove = function(e){
+		if(document.ontouchmove) document.ontouchmove(e);
+	}	
+	Event.prototype.preventDefault = function(){};
+}

@@ -8,26 +8,27 @@ CACHE MANIFEST
 CACHE:
 
 # Javascript
-javascripts/
+javascripts/behaviors.js
+javascripts/effects.js
+javascripts/prototype.js
+javascripts/schema.js
+javascripts/scriptaculous.js
+javascripts/sortable_list.js
+javascripts/todo.js
+../wn_mobile/javascripts/wn_data_types.js
+../wn_mobile/javascripts/wn_relationships.js
+../wn_mobile/javascripts/wn_model.js
+../wn_mobile/javascripts/wn_database.js
+../wn_mobile/javascripts/wn_db_boot.js
 
 # CSS
-stylesheets/
+stylesheets/main.css
+stylesheets/reset-min.css
 
 # Images
 
-images/
+images/Icon.png
 
 # HTML
 
 index.html
-
-NETWORK:
-
-# All URLs that start with the following lines
-# are whitelisted. They must not be cached
-
-http://weather.com/status
-
-FALLBACK:
-
-# demoimages/ images/

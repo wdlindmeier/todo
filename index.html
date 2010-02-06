@@ -1,9 +1,6 @@
-<html> <!-- manifest="index.manifest" -->
+<html manifest="index.manifest">
 	<head>
 		<title>Todo</title>
-
-		<!-- Manifest TEST -->		
-		<!-- script type="text/javascript" src="javascripts/test.js"></script -->
 		
 		<!-- Utility -->
 		<script type="text/javascript" src="javascripts/prototype.js"></script>
@@ -49,9 +46,9 @@
 		</div>
 
 		<ul class="sorting" id="sort_incomplete">
-			<li><a href="#" rel="position" id="sort_incomplete_position">Priority</a></li>
-			<li><a href="#" rel="created_at" id="sort_incomplete_created_at">Added</a></li>
-			<li><a href="#" rel="tag" id="sort_incomplete_tag_id">Category</a></li>
+			<li><a href="#" rel="position" id="sort_incomplete_position">Priority <span class="order"></span></a></li>
+			<li><a href="#" rel="created_at" id="sort_incomplete_created_at">Added <span class="order"></span></a></li>
+			<li><a href="#" rel="tag" id="sort_incomplete_tag_id">Category <span class="order"></span></a></li>
 		</ul>
 		
 		<div id="edit_item_form" style="display:none;">
@@ -77,9 +74,9 @@
 		</div>
 		
 		<ul class="sorting" id="sort_complete">
-			<li><a href="#" rel="completed_at" id="sort_complete_completed_at">Completed</a></li>
-			<li><a href="#" rel="created_at" id="sort_complete_created_at">Added</a></li>
-			<li><a href="#" rel="tag" id="sort_complete_tag_id">Category</a></li>			
+			<li><a href="#" rel="completed_at" id="sort_complete_completed_at">Completed <span class="order"></span></a></li>
+			<li><a href="#" rel="created_at" id="sort_complete_created_at">Added <span class="order"></span></a></li>
+			<li><a href="#" rel="tag" id="sort_complete_tag_id">Category <span class="order"></span></a></li>			
 		</ul>
 		<ul id="tasks_complete" class="task_list sortable_list"></ul>		
 		

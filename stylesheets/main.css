@@ -69,24 +69,45 @@ ul.sorting{
 }
 
 .sorting li a.selected{
-    background-color:#333;
+    background-color:#444;
     color:#fff;
+}
+
+.sorting li a .order{
+	display:inline-block;
+	position:relative;
+	left:5px;
+	top:-3px;
+}
+
+.sorting li a.selected .order{
+}
+
+.sorting li a.selected .order[rel="ASC"]{
+	border-bottom:5px solid #ccc;
+	border-left:5px solid transparent;
+	border-right:5px solid transparent;
+}
+
+.sorting li a.selected .order[rel="DESC"]{
+	border-top:5px solid #ccc;
+	border-left:5px solid transparent;
+	border-right:5px solid transparent;	
 }
 
 /* Task List Items */
 
+.task_list li{
+	position:relative;
+	padding:10px;
+}
+
 .task_list .item_description{
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    position:absolute;
-    text-indent:10px;
     z-index:1;
-    margin-top:-5px;
 }
 
 .task_list .detail{
     position:relative;
-    top:10px;
     left:10px;
     font-size:10px;
     color:#666;
@@ -97,10 +118,20 @@ ul.sorting{
     display:inline-block;
 }
 
+.task_list .tag{
+	color:#fff;
+	background-color:#444;
+	padding:1px 5px;
+	font-weight:bold;
+	-webkit-border-radius:4px;
+}
+
 .task_list button
 {
     text-align:center;
     padding:0;
+	float:left;
+	margin:0 10px 5px 0;
 }
 
 .task_list button.delete{
@@ -130,7 +161,6 @@ ul.sorting{
     min-height:45px;
 	position:relative;
 	border-bottom:1px dotted #9999ff;
-	line-height:45px;
 }
 
 .dragging{
@@ -141,17 +171,21 @@ ul.sorting{
 }
 
 .dragger{
+	cursor:move;
     position:absolute;
     right:0;
 	top:0;
-	background-color:#aaa;
-	height:45px;
+	background-color:#fff;
+	height:100%;
+	display:table-cell;
+	vertical-align:middle;
+	line-height:100%;
 	width:45px;
 	display:none;
 	z-index:1;
 	text-align:center;
 	line-height:45px;
-	color:#ccc;
+	color:#fff;
 	text-shadow:0 0 3px #666;
 	font-size:30px;
 }
@@ -163,6 +197,10 @@ ul.sorting{
 
 .editing .dragger{
     display:block;
+}
+
+.editing .task_list li{
+	background-color:#eee;
 }
 
 /* Form */
