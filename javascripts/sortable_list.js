@@ -98,6 +98,7 @@ document.observe('dom:loaded', function(){
 	}
 
 	document.ontouchend = function(e){
+	    document.title = new Date();
 		if($draggedElement){
 			e.preventDefault();											
 			$($draggedElement).removeClassName('dragging');						

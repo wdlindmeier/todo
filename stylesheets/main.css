@@ -25,28 +25,29 @@ h2{ font-size:20px; }
     cursor:pointer;
     position:absolute;
     z-index:100;
+    top:4px;
+    padding:0 10px;    
+    background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#888));    
 }
 
-.header button{
+button{
     display:inline-block;
     height:30px;
     background-color:#ddd;    
     border:none;
-    color:#444;
-	text-shadow:0 1px 1px #fff;
-    font-weight:bold;
-    padding:0 10px;
+    color:#333;
+	text-shadow:0 1px 0px #fff;
+    font-weight:bold;    
     -webkit-border-radius:5px;
-    top:5px;
 	border-top:1px solid #fff;
-	-webkit-box-shadow:0 1px 1px #000;
+	-webkit-box-shadow:0 1px 0px #000;
 	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#bbb));
 }
 
 .editing button#edit_list{
     color:#fff;
 	background: -webkit-gradient(linear, left top, left bottom, from(#69f), to(#36c));
-	text-shadow:none; /*0 1px 1px #000;*/
+	text-shadow:none;
 }
 
 .header button.left{
@@ -62,6 +63,8 @@ ul.sorting{
     width:100%;
     background-color:#aaa;
 	-webkit-box-shadow:0px 3px 3px #aaa;
+	position:relative;
+	z-index:100;
 }
 
 .sorting li{
@@ -85,7 +88,7 @@ ul.sorting{
 }
 
 .sorting li a:active{
-    background-color:#6699ff;
+    background-color:#999;
     color:#fff;
 }
 
@@ -121,15 +124,18 @@ ul.sorting{
 .task_list li{
 	position:relative;
 	padding:10px;
+	min-height:30px;
+	border-bottom:1px solid #ddd;
 }
 
 .task_list .item_description{
     z-index:1;
+    margin-right:10px;
 }
 
 .task_list .detail{
-    position:relative;
-    left:10px;
+    xmargin-left:10px;
+    display:inline-block;
     font-size:10px;
     color:#666;
     display:none;
@@ -149,10 +155,10 @@ ul.sorting{
 
 .task_list button
 {
-    text-align:center;
-    padding:0;
+    text-align:center;    
 	float:left;
 	margin:0 10px 5px 0;
+	
 }
 
 .task_list button.delete{
@@ -174,10 +180,8 @@ ul.sorting{
 /* Sortable lists */
 
 .sortable_list li{
-    min-height:45px;
 	position:relative;
-	xborder-bottom:1px dotted #9999ff;
-	-webkit-box-shadow:0 3px 3px #ccc;
+	x-webkit-box-shadow:0 3px 3px #ccc;
 }
 
 .dragging{
@@ -192,7 +196,7 @@ ul.sorting{
     position:absolute;
     right:0;
 	top:0;
-	background-color:#fff;
+	background-color:#def;
 	height:100%;
 	display:table-cell;
 	vertical-align:middle;
@@ -202,23 +206,26 @@ ul.sorting{
 	z-index:1;
 	text-align:center;
 	line-height:45px;
-	color:#fff;
-	text-shadow:0 0 3px #666;
-	font-size:30px;
+	color:#efefff;
+	text-shadow:0 1px 0px #aaa;
+	font-size:40px;
+	border-left:1px solid #ddd;
+	-webkit-box-shadow:-5px 0 0px #fff;
 }
 
 .dragging .dragger{
 	background-color:#000;
 	z-index:100001 !important;
+	-webkit-box-shadow:-5px 0 0px yellow;
 }		
 
 .editing .dragger{
     display:block;
 }
 
-.editing .task_list li{
-	background-color:#eee;
-}
+/*.editing .task_list li{
+	background-color:#eef;
+}*/
 
 /* Form */
 

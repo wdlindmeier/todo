@@ -1,10 +1,13 @@
 TODO:
-Sorting list doesnt take into account a long li
+Scriptaculous isnt needed. Change transition.
+Always show tags
+Sorting list doesnt take into account a long li?
 New tags get random color
 New items should get position at the end of the list (autoincrement?)
 tag order should be name, not id
 dragging li's positions should take the sort order into account (ASC or DESC)
 Clicking to reorder the items is a little annoying... although, an apple standard
+cache manifest that bitch!
 
 COMPLETED:
 ====================
