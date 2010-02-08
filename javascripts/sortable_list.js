@@ -8,6 +8,7 @@ $draggedDimensions = {width : 0, height : 0};
 function setDraggedElement(el, event){
 	$draggedDimensions = el.getDimensions();
 	$draggedElement = el;
+	$(el).removeClassName('inactive');
 	$(el).addClassName('dragging');
 	var xy = el.positionedOffset();
 	var pointX = $IS_IPHONE ? event.touches[0].clientX : event.pointerX();
@@ -16,7 +17,7 @@ function setDraggedElement(el, event){
 	$draggedOffset.y = pointY - xy[1];
 	var xy = el.parentNode.positionedOffset();
 	var wh = el.parentNode.getDimensions();
-	$draggableParentRect = {x : xy[0], y : xy[1], w : wh.width, h : wh.height};
+	$draggableParentRect = {x : xy[0], y : xy[1], width : wh.width, height : wh.height};
 }
 
 function repositionDraggedElement(clientY){
@@ -87,10 +88,17 @@ document.observe('dom:loaded', function(){
 				var pointY = $IS_IPHONE ? e.touches[0].clientY : e.pointerY();
 				e.preventDefault();											
 				repositionDraggedElement(pointY - $draggableParentRect.y);						
-				var y = pointY - $draggableParentRect.y;
-				var elY = y - ($draggedPosition * $draggedDimensions.height) - $draggedOffset.y;
-				// This prevents the li from going over the edges of the container.
-				if(elY <= $draggedDimensions.height && elY >= $draggedDimensions.height * -1){
+				var y = pointY - $draggableParentRect.y;				
+				var cellY = 0;
+				for(var c=0;c<$draggedPosition;c++){
+					cellY += $draggedElement.parentNode.childNodes[c].getDimensions().height;
+				}
+				
+				var elY = y - cellY - $draggedOffset.y;
+				// This condition prevents the li from going over the edges of the container.
+				var marginOverlap = $draggedDimensions.height * 0.5;
+				if(y <= $draggableParentRect.height + marginOverlap 
+					&& y >= marginOverlap * -1){
 					$draggedElement.style.top = elY+'px';
 				}
 			}
@@ -98,19 +106,16 @@ document.observe('dom:loaded', function(){
 	}
 
 	document.ontouchend = function(e){
-	    document.title = new Date();
 		if($draggedElement){
-			e.preventDefault();											
-			$($draggedElement).removeClassName('dragging');						
+			e.preventDefault();
+			$($draggedElement).addClassName('inactive');
+			$($draggedElement).removeClassName('dragging');
 			$draggedElement.style.top = null;
 			$draggedElement.style.left = null;						
-			new Effect.Highlight($draggedElement, { startcolor : '#ffff00', restorecolor: 'none', duration : 0.2, afterFinish : function(e){
-				e.element.style.backgroundColor = null;
-			}});
+			$draggedElement = null;
+			// Stop observing the move event
+			document.ontouchmove = null;
 		}					
-		$draggedElement = null;
-		// Stop observing the move event
-		document.ontouchmove = null;
 	}	
 	
 	observeDraggableElements();

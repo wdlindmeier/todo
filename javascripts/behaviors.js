@@ -14,12 +14,12 @@ document.observe('dom:loaded', function(){
 
     // Enter/exit edit mode
     $('edit_list').observe('click', function(){
-        Todo.cancelEditItem();
+        Todo.cancelEditItem(false);
         Todo.toggleEditingMode();
     });
 
     $('cancel_edit_item').observe('click', function(){
-        Todo.cancelEditItem();
+        Todo.cancelEditItem(true);
     });
 
     $('save_edit_item').observe('click', function(){

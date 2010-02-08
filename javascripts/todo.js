@@ -28,7 +28,10 @@ var Todo = {
                     return a.getAttribute(sortColumnComplete) > b.getAttribute(sortColumnComplete) ? sortOrderComplete : sortOrderComplete * -1;
                 })
             };
-            
+
+			// Move the editing form into it's correct place if it's not there already
+			document.body.insertBefore($('edit_item_form'), $('tasks_incomplete'));		
+            						
             for(var listName in tasksByList){
                 $(listName).innerHTML = '';
                 var items = tasksByList[listName];
@@ -104,7 +107,7 @@ var Todo = {
     
     makeItemEditable : function(itemID){
         if(Todo.isTouchingItem){
-            Todo.cancelEditItem();
+            Todo.cancelEditItem(false);
             var li = $('item_'+itemID);
             li.parentNode.insertBefore($('edit_item_form'), li);
             var item = Item.recordGraph()[itemID];
@@ -114,7 +117,7 @@ var Todo = {
             $('edit_item_description').value = item.getAttribute('description');
             // set the id
             $('edit_item_id').value = itemID;
-            $('edit_item_form').show();
+			$('edit_item_form').addClassName('visible');
             li.hide();        
         }        
     },
@@ -144,15 +147,18 @@ var Todo = {
         li.appendChild(spanDescription);
         
         // Enter editing mode when description is held-down
-        var touchdownevent = function(e){            
-            Todo.isTouchingItem = true;
-            var touchendevent = function(e){
-                Todo.isTouchingItem = false;
-                document.onmouseup = null;
-            }
-            if(Prototype.Browser.MobileSafari) document.ontouchend = touchendevent;
-            else document.onmouseup = touchendevent;
-            setTimeout("Todo.makeItemEditable("+itemID+")", 600);                        
+        var touchdownevent = function(e){
+			// Only allow item editing when the list is not in "edit" mode
+			if(!Todo.isEditing){
+	            Todo.isTouchingItem = true;
+	            var touchendevent = function(e){
+	                Todo.isTouchingItem = false;
+	                document.onmouseup = null;
+	            }
+	            if(Prototype.Browser.MobileSafari) document.ontouchend = touchendevent;
+	            else document.onmouseup = touchendevent;
+	            setTimeout("Todo.makeItemEditable("+itemID+")", 600);                        				
+			}
         }
         if(Prototype.Browser.MobileSafari) spanDescription.ontouchstart = touchdownevent;
         else spanDescription.onmousedown = touchdownevent;                
@@ -208,11 +214,15 @@ var Todo = {
     },
     
     showNewForm : function(){
-        // Cancel it in-case it's already visible
-        Todo.cancelEditItem();        
-        // Move the form above the incomplete list
-        $('tasks_incomplete').parentNode.insertBefore($('edit_item_form'), $('tasks_incomplete'));        
-        $('edit_item_form').show();
+		if($('edit_item_form').hasClassName('visible')){
+	        // Cancel it in-case it's already visible
+	        Todo.cancelEditItem(true);
+		}else{
+			$('edit_item_form').addClassName('transition');
+	        // Move the form above the incomplete list
+	        $('tasks_incomplete').parentNode.insertBefore($('edit_item_form'), $('tasks_incomplete'));        
+			$('edit_item_form').addClassName('visible');
+		}
     },
     
     clearEditingForm : function(){
@@ -237,17 +247,23 @@ var Todo = {
             item.tag.set(tag);
         }
         item.setAttribute('description', $('edit_item_description').value);
+        // Close out the new form
+        Todo.cancelEditItem(false);
         item.save(function(item){
             Todo.reloadAllItems();
         });
-        // Close out the new form
-        Todo.cancelEditItem();
     },
     
-    cancelEditItem : function(){
-        var itemID = $('edit_item_id').value;        
+    cancelEditItem : function(shouldTransition){		
+		if(shouldTransition){
+			$('edit_item_form').addClassName('transition');
+		}else{
+			$('edit_item_form').removeClassName('transition');
+		}
+        var itemID = $('edit_item_id').value;
         Todo.clearEditingForm();
-        $('edit_item_form').hide();
+		$('edit_item_form').removeClassName('visible');
+		// NOTE: This isn't the most elegant transition
         if(itemID) $('item_'+itemID).show();
     },
     

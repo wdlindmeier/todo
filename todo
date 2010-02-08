@@ -1,7 +1,4 @@
 TODO:
-Scriptaculous isnt needed. Change transition.
-Always show tags
-Sorting list doesnt take into account a long li?
 New tags get random color
 New items should get position at the end of the list (autoincrement?)
 tag order should be name, not id
@@ -11,6 +8,14 @@ cache manifest that bitch!
 
 COMPLETED:
 ====================
+x Add CSS animation for showing/hiding form
+x Always show tags
+x Edit => Edit cell => move cell causes errors.	
+	Editing description should disable editing mode or visa versa
+x Edit item => save => Edit seems to cause error
+x sorting/pulling items over longer items causes delay
+x positioning isnt smooth on longer items
+x Scriptaculous isnt needed. Change transition.
 x Allow for long descriptions
 x Add sort order triangles
 x Only allow dragging on edit

@@ -19,6 +19,7 @@ h2{ font-size:20px; }
     line-height:40px;	
 	background: -webkit-gradient(linear, left top, left bottom, from(#666), to(#333));
 	border-top:1px solid #888;
+	z-index:98;
 }
 
 .header button{
@@ -134,14 +135,13 @@ ul.sorting{
 }
 
 .task_list .detail{
-    xmargin-left:10px;
     display:inline-block;
     font-size:10px;
     color:#666;
     display:none;
 }
 
-.sortby_position .position, .sortby_tag_id .tag, .sortby_created_at .created_at, .sortby_completed_at .completed_at{
+.sortby_position .position, .task_list .tag, .sortby_created_at .created_at, .sortby_completed_at .completed_at{
     display:inline-block;
 }
 
@@ -158,40 +158,39 @@ ul.sorting{
     text-align:center;    
 	float:left;
 	margin:0 10px 5px 0;
-	
+	display:inline-block;
 }
 
-.task_list button.delete{
-    display:none;
+.editing .task_list button.delete, .task_list button.complete{    
+	display:inline-block;
 }
 
-.task_list button.complete{
-    display:inline-block;
-}
-
-.editing .task_list button.delete{
-    display:inline-block;
-}
-
-.editing .task_list button.complete{
-    display:none;
+.editing .task_list button.complete, .task_list button.delete{
+	display:none;
 }
 
 /* Sortable lists */
 
 .sortable_list li{
 	position:relative;
-	x-webkit-box-shadow:0 3px 3px #ccc;
+	background-color:#fff;
+}
+
+.sortable_list li.inactive{
+	background-color:#fff;
+	-webkit-transition-duration: 0.4s;	
+	-webkit-transition-property:top;
 }
 
 .dragging{
-	background-color:yellow !important;
+	-webkit-box-shadow:0 0 10px #777;
 	position:relative;
-	opacity:0.75;
 	z-index:100;
+	border-color:#777;
 }
 
 .dragger{
+	display:block;    
 	cursor:move;
     position:absolute;
     right:0;
@@ -201,8 +200,8 @@ ul.sorting{
 	display:table-cell;
 	vertical-align:middle;
 	line-height:100%;
-	width:45px;
-	display:none;
+	width:0;
+	overflow:hidden;
 	z-index:1;
 	text-align:center;
 	line-height:45px;
@@ -210,27 +209,35 @@ ul.sorting{
 	text-shadow:0 1px 0px #aaa;
 	font-size:40px;
 	border-left:1px solid #ddd;
-	-webkit-box-shadow:-5px 0 0px #fff;
+	-webkit-box-shadow:-5px 0 0 #fff;
+	-webkit-transition-duration: 0.4s;	
 }
 
 .dragging .dragger{
 	background-color:#000;
-	z-index:100001 !important;
-	-webkit-box-shadow:-5px 0 0px yellow;
-}		
-
-.editing .dragger{
-    display:block;
+	z-index:99 !important;
 }
 
-/*.editing .task_list li{
-	background-color:#eef;
-}*/
+.editing .dragger{
+	width:45px;
+}
 
 /* Form */
 
 #edit_item_form{
     background-color:#eee;
+	height:0;
+	overflow:hidden;
+	padding:0;
+}
+
+#edit_item_form.transition
+{
+	-webkit-transition-duration: 0.4s;
+}
+
+#edit_item_form.visible{
+	height:130px;
     padding-bottom:10px;
 }
 
