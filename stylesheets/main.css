@@ -145,11 +145,6 @@ ul.sorting{
     display:inline-block;
 }
 
-/* TMP */
-.task_list .position{
-	display:inline-block !important;
-}
-
 .task_list .tag{
 	color:#fff;
 	background-color:#444;
@@ -159,12 +154,10 @@ ul.sorting{
 	margin-right:10px;
 }
 
-.task_list button
-{
+.task_list button.complete, .task_list button.delete{	
 	float:left;
 	margin:0 10px 5px 0;
 	display:inline-block;
-	/* TEST */
 	-webkit-border-radius:15px;
 	width:30px;
 	height:30px;

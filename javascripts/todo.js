@@ -20,9 +20,18 @@ var Todo = {
             
             var tasksByList = {
                 'tasks_incomplete' : sorted[0].sort(function(a,b){
-                    // Note: This is comparing the tag_id, not the tag.
-                    // While it lumps the tags together, it doesnt alphabetise them                            
-                    return a.getAttribute(sortColumnIncomplete) > b.getAttribute(sortColumnIncomplete) ? sortOrderIncomplete : sortOrderIncomplete * -1;
+					if(sortColumnIncomplete == 'tag_id'){
+						var aTagId = a.getAttribute('tag_id');
+						var bTagId = b.getAttribute('tag_id');
+						if(aTagId && bTagId){							
+							var tags = Tag.recordGraph();
+							return tags[aTagId].getAttribute('name').toLowerCase() > tags[bTagId].getAttribute('name').toLowerCase() ? sortOrderIncomplete : sortOrderIncomplete * -1;
+						}else{
+							return sortOrderIncomplete;
+						}
+					}else{
+						return a.getAttribute(sortColumnIncomplete) > b.getAttribute(sortColumnIncomplete) ? sortOrderIncomplete : sortOrderIncomplete * -1;
+					}                    
                 }), 
                 'tasks_complete' : sorted[1].sort(function(a,b){
                     return a.getAttribute(sortColumnComplete) > b.getAttribute(sortColumnComplete) ? sortOrderComplete : sortOrderComplete * -1;
@@ -302,7 +311,7 @@ var Todo = {
     
     loadAllTags : function(selectedTagId){
         Tag.findAll(function(tags){
-            var options = ['<option value="">[ tag ]</option>'];
+            var options = ['<option value="">[ category ]</option>'];
             for(var t=0;t<tags.length;t++){
                 var tag = tags[t];
                 options.push('<option value="'+tag.getAttribute('id')+'">'+tag.getAttribute('name')+'</option>')

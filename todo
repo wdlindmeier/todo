@@ -1,6 +1,5 @@
 TODO:
-tag order should be name, not id
-
+tags look weird hanging on the end
 new items should get CSS highlight
 New tags get random color
 use prototype-min
@@ -8,6 +7,7 @@ cache manifest that bitch!
 
 COMPLETED:
 ====================
+tag order should be name, not id
 x dragging li's positions should take the sort order into account (ASC or DESC)
 	based on current preference or default
 x New items should get position at the end of the list (autoincrement?)
