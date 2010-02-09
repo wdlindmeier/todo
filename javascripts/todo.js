@@ -45,13 +45,22 @@ var Todo = {
             
             observeDraggableElements(function(draggedElement){
                 var items = draggedElement.parentNode.select('.draggable');
+
+	            var sortOrder = 1;
+				if(localStorage['sort_column_incomplete'] == 'position'){
+					sortOrder = localStorage['sort_order_incomplete'] * 1;
+				}
+				console.log('sortOrder: '+sortOrder);
+							
             	for(var i=0;i<items.length;i++){
+					// The position should take sort order into account
+					var position = (sortOrder == 1) ? i : items.length - i - 1;
             		var itemLi = items[i];
             		var itemID = itemLi.id.replace('item_', '');
             		var item = Item.recordGraph()[itemID];
-            		item.setAttribute('position', i);
+            		item.setAttribute('position', position);
             		item.save(function(record){ 
-            		    // console.log('set position '+record.getAttribute('position'))
+            		    //console.log('set position '+record.getAttribute('position')+' for item '+record.getAttribute('id'));
             		});
             	}
             });
@@ -131,13 +140,13 @@ var Todo = {
         var buttonDelete = document.createElement('button');
         buttonDelete.className = 'delete';
         buttonDelete.onclick = function(e){ Todo.confirmDeleteForItem(itemID); return false; }.bind(this);
-        buttonDelete.innerHTML = 'X';
+        buttonDelete.innerHTML = '<span>X</span>';
         li.appendChild(buttonDelete);
         
         var buttonComplete = document.createElement('button');
         buttonComplete.className = 'complete';
         buttonComplete.onclick = function(e){ Todo.markItemAsComplete(itemID); return false; }.bind(this);
-        buttonComplete.innerHTML = '&#10004;';
+        buttonComplete.innerHTML = '<span>&#10004;</span>';
         li.appendChild(buttonComplete);
                    
         // Description
@@ -163,6 +172,16 @@ var Todo = {
         if(Prototype.Browser.MobileSafari) spanDescription.ontouchstart = touchdownevent;
         else spanDescription.onmousedown = touchdownevent;                
 
+/*
+        // Position
+        var position = item.getAttribute('position');
+        if(position){
+            var spanPosition = document.createElement('span');
+            spanPosition.className = 'position detail';
+            spanPosition.innerHTML = position;
+            li.appendChild(spanPosition);
+        }        
+*/
 
         // Tag
         var tagID = item.getAttribute('tag_id');
@@ -239,7 +258,9 @@ var Todo = {
         if(itemID){
             var item = Item.recordGraph()[$('edit_item_id').value];
         }else{
-            var item = new Item();
+			// 
+			var position = $('tasks_incomplete').childNodes.length + 1;
+            var item = new Item({position : position});
         }
         var tagID = $('edit_item_tag_id').value;
         if(tagID){
@@ -272,6 +293,8 @@ var Todo = {
         // If it's already completed, mark as incomplete
         var completedDate = !!item.getAttribute('completed_at') ? null : new Date();
         item.setAttribute('completed_at', completedDate);
+		// Remove the position from a completed item
+		item.setAttribute('position', null);
         item.save(function(item){
             Todo.reloadAllItems();
         });

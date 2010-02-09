@@ -117,9 +117,7 @@ document.observe('dom:loaded', function(){
 			document.ontouchmove = null;
 		}					
 	}	
-	
-	observeDraggableElements();
-	
+		
 });
 
 if(!$IS_IPHONE){

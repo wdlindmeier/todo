@@ -1,13 +1,16 @@
 TODO:
-New tags get random color
-New items should get position at the end of the list (autoincrement?)
 tag order should be name, not id
-dragging li's positions should take the sort order into account (ASC or DESC)
-Clicking to reorder the items is a little annoying... although, an apple standard
+
+new items should get CSS highlight
+New tags get random color
+use prototype-min
 cache manifest that bitch!
 
 COMPLETED:
 ====================
+x dragging li's positions should take the sort order into account (ASC or DESC)
+	based on current preference or default
+x New items should get position at the end of the list (autoincrement?)
 x Add CSS animation for showing/hiding form
 x Always show tags
 x Edit => Edit cell => move cell causes errors.	

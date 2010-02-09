@@ -145,24 +145,59 @@ ul.sorting{
     display:inline-block;
 }
 
+/* TMP */
+.task_list .position{
+	display:inline-block !important;
+}
+
 .task_list .tag{
 	color:#fff;
 	background-color:#444;
-	padding:1px 5px;
+	padding:2px 5px;
 	font-weight:bold;
 	-webkit-border-radius:4px;
+	margin-right:10px;
 }
 
 .task_list button
 {
-    text-align:center;    
 	float:left;
 	margin:0 10px 5px 0;
 	display:inline-block;
+	/* TEST */
+	-webkit-border-radius:15px;
+	width:30px;
+	height:30px;
+	-webkit-box-shadow:0 0 6px #888;
+	color:#fff;
+	border:3px solid #fff;
+	position:relative;
+}
+
+.task_list button span{
+	display:block;
+	position:absolute;
+	top:0;
+	left:0;
+	width:30px;
+	height:22px;
+	text-align:center;	
+	line-height:24px;
+	text-indent:3px;
+}
+
+.task_list button.complete{    
+	color:#493;
+	xbackground: -webkit-gradient(linear, left top, left bottom, from(#7c6), to(#493));    
+}
+
+.editing .task_list button.delete{
+	color:#800;
+	xbackground: -webkit-gradient(linear, left top, left bottom, from(#d00), to(#800));    
 }
 
 .editing .task_list button.delete, .task_list button.complete{    
-	display:inline-block;
+	display:inline-block;	
 }
 
 .editing .task_list button.complete, .task_list button.delete{
@@ -195,7 +230,7 @@ ul.sorting{
     position:absolute;
     right:0;
 	top:0;
-	background-color:#def;
+	background-color:#fff; /* #def; */
 	height:100%;
 	display:table-cell;
 	vertical-align:middle;
@@ -205,8 +240,8 @@ ul.sorting{
 	z-index:1;
 	text-align:center;
 	line-height:45px;
-	color:#efefff;
-	text-shadow:0 1px 0px #aaa;
+	color:#ccc;
+	text-shadow:0 -1px 0px #999;
 	font-size:40px;
 	border-left:1px solid #ddd;
 	-webkit-box-shadow:-5px 0 0 #fff;
