@@ -9,17 +9,15 @@ CACHE:
 
 # Javascript
 javascripts/behaviors.js
-javascripts/effects.js
 javascripts/prototype.js
 javascripts/schema.js
-javascripts/scriptaculous.js
 javascripts/sortable_list.js
 javascripts/todo.js
-../wn_mobile/javascripts/wn_data_types.js
-../wn_mobile/javascripts/wn_relationships.js
-../wn_mobile/javascripts/wn_model.js
-../wn_mobile/javascripts/wn_database.js
-../wn_mobile/javascripts/wn_db_boot.js
+javascripts/wn/wn_data_types.js
+javascripts/wn/wn_relationships.js
+javascripts/wn/wn_model.js
+javascripts/wn/wn_database.js
+javascripts/wn/wn_db_boot.js
 
 # CSS
 stylesheets/main.css
