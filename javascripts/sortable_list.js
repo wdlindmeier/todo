@@ -72,7 +72,7 @@ function observeDraggableElements(callbackHandler){
 			if(!$IS_IPHONE) dragger.onmousedown = dragger.ontouchstart;
 
     		dragger.ontouchend = function(e){				
-    			e.preventDefault();
+    			//e.preventDefault();
     			callbackHandler(draggable);
     		}.bind(this);	
 			if(!$IS_IPHONE) dragger.onmouseup = dragger.ontouchend;
@@ -81,10 +81,11 @@ function observeDraggableElements(callbackHandler){
 }
 
 document.observe('dom:loaded', function(){
+
 	document.ontouchstart = function(e){
+		
 		if($draggedElement){
 			e.preventDefault();	
-			// Only observe the mouse move when the mouse is down
 			document.ontouchmove = function(e){
 				e.preventDefault();											
 				var pointY = $IS_IPHONE ? e.touches[0].clientY : e.pointerY();
@@ -108,7 +109,7 @@ document.observe('dom:loaded', function(){
 
 	document.ontouchend = function(e){
 		if($draggedElement){
-			e.preventDefault();
+			//e.preventDefault();
 			$($draggedElement).addClassName('inactive');
 			$($draggedElement).removeClassName('dragging');
 			$draggedElement.style.top = null;
