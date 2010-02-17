@@ -4,6 +4,8 @@ body, *{
 
 body{
 	min-height:520px;
+	width:100%;	
+	overflow-x:hidden;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -66,10 +68,10 @@ button{
 ul.sorting{
     display:table;
     width:100%;
-    background-color:#aaa;
-	-webkit-box-shadow:0px 3px 3px #aaa;
+    background-color:#aaa;	
 	position:relative;
-	z-index:100;
+	z-index:100;	
+	-webkit-box-shadow:0px 3px 3px #aaa;
 }
 
 .sorting li{
