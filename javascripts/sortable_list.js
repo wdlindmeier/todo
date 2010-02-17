@@ -117,8 +117,10 @@ document.observe('dom:loaded', function(){
 			// Stop observing the move event
 			document.ontouchmove = null;
 		}					
-	}	
-		
+	}		
+
+	window.scrollTo(0,1);
+	
 });
 
 if(!$IS_IPHONE){

@@ -1,11 +1,11 @@
 var WNDBFixtures = {    
     'Tag' : [{
-            name : "DESIGN"
+            name : "Work"
         },
         {
-            name : "DEV"
+            name : "Home"
         },
         {
-            name : "BUG"
+            name : "Play"
         }]
 }
