@@ -3,6 +3,7 @@ var Todo = {
     isEditing : false,
     
     reloadAllItems  : function(){
+	
         Item.findAll(function(items){
             var sorted = items.partition(function(i){ return !i.getAttribute('completed_at'); });
             
@@ -74,10 +75,9 @@ var Todo = {
             });
             
 			window.scrollTo(0,1);
-			
         });                
     },
-    
+
     updateSortColumns : function(){
 	
         $$('.sorting .selected').each(function(el,i){

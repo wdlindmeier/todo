@@ -73,11 +73,25 @@ function observeDraggableElements(callbackHandler){
 
     		dragger.ontouchend = function(e){				
     			//e.preventDefault();
-    			callbackHandler(draggable);
+				killDraggableElement();    			
+				callbackHandler(draggable);				
     		}.bind(this);	
 			if(!$IS_IPHONE) dragger.onmouseup = dragger.ontouchend;
 		}
 	}.bind(this));	
+}
+
+function killDraggableElement(){
+	if($draggedElement){
+		//e.preventDefault();
+		$($draggedElement).addClassName('inactive');
+		$($draggedElement).removeClassName('dragging');
+		$draggedElement.style.top = null;
+		$draggedElement.style.left = null;						
+		$draggedElement = null;
+		// Stop observing the move event
+		document.ontouchmove = null;
+	}						
 }
 
 document.observe('dom:loaded', function(){
@@ -108,16 +122,8 @@ document.observe('dom:loaded', function(){
 	}
 
 	document.ontouchend = function(e){
-		if($draggedElement){
-			//e.preventDefault();
-			$($draggedElement).addClassName('inactive');
-			$($draggedElement).removeClassName('dragging');
-			$draggedElement.style.top = null;
-			$draggedElement.style.left = null;						
-			$draggedElement = null;
-			// Stop observing the move event
-			document.ontouchmove = null;
-		}					
+		// Also killing it here as a fallback
+		killDraggableElement();
 	}		
 	
 });
