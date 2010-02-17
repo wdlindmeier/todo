@@ -95,7 +95,7 @@ function killDraggableElement(){
 }
 
 document.observe('dom:loaded', function(){
-
+	
 	document.ontouchstart = function(e){
 		
 		if($draggedElement){
@@ -116,7 +116,7 @@ document.observe('dom:loaded', function(){
 				if(y <= $draggableParentRect.height + marginOverlap 
 					&& y >= marginOverlap * -1){
 					$draggedElement.style.top = elY+'px';
-				}
+				}				
 			}
 		} 
 	}
