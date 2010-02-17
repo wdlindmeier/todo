@@ -118,8 +118,6 @@ document.observe('dom:loaded', function(){
 			document.ontouchmove = null;
 		}					
 	}		
-
-	window.scrollTo(0,1);
 	
 });
 
