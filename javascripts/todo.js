@@ -59,7 +59,6 @@ var Todo = {
 				if(localStorage['sort_column_incomplete'] == 'position'){
 					sortOrder = localStorage['sort_order_incomplete'] * 1;
 				}
-				console.log('sortOrder: '+sortOrder);
 							
             	for(var i=0;i<items.length;i++){
 					// The position should take sort order into account

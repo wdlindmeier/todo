@@ -22,9 +22,3 @@ Element.addMethods({
 		}		
 	}
 });
-
-function console_log(){
-	if($LOG_PROGRESS) console.log(arguments);
-}
-
-var $LOG_PROGRESS = false;

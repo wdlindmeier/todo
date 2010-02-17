@@ -10,13 +10,13 @@ const WNDB = {
 	},
 	
 	genericDataHandler : function(transaction, results){
-		console_log("DataHandler");
-		console_log(results);
+		console.log("DataHandler");
+		console.log(results);
 	}, 
 
 	genericErrorHandler : function(transaction, error){
-		console_log("DB Error");
-		console_log(error);
+		console.log("DB Error");
+		console.log(error);
 	},
 	
 	dropTable : function(tableName){
@@ -24,12 +24,12 @@ const WNDB = {
 	   	  function (transaction) {
 				  transaction.executeSql("DROP TABLE IF EXISTS "+tableName+";", [], 
 															 	function(transation, results){
-																	console_log("Dropped table "+tableName);
-																	console_log(results);
+																	console.log("Dropped table "+tableName);
+																	console.log(results);
 																}.bind(this),
 																function(transation, errors){
-																	console_log("Error dropping table "+tableName);
-																	console_log(errors);																
+																	console.log("Error dropping table "+tableName);
+																	console.log(errors);																
 																}.bind(this));
 			}.bind(this)
 		);	
@@ -55,13 +55,10 @@ const WNDB = {
 	            var createQuery = 'CREATE TABLE IF NOT EXISTS schema_info(version INTEGER NOT NULL PRIMARY KEY);';
 	            transaction.executeSql(createQuery, [], function(trans, results){
 	                // The table was created
-	                console_log('Created schema_info table');
 	                // Set the initial version to 0
-				    console_log('Inserting schema version '+versionNumber);
 	                transaction.executeSql("INSERT INTO schema_info(version) VALUES(?);", [versionNumber], WNDB.genericDataHandler, WNDB.genericErrorHandler);
 				}.bind(this), function(trans, results){
 				    // If the table already existed, update the schema version
-				    console_log('Updating schema version to '+versionNumber);
                	    transaction.executeSql("UPDATE schema_info SET version = ?;", [versionNumber], WNDB.genericDataHandler, WNDB.genericErrorHandler);    				
 				});
 			}.bind(this)
@@ -75,7 +72,6 @@ const WNDB = {
         	$JSDB.transaction(
                	function (transaction) {
            	        var tableName = this.tableName();
-    				console_log('creating '+tableName);
     				// This will fail if the table already exists
     				var createQuery = 'CREATE TABLE '+tableName+'(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT';
     				for(var attrName in this.attributes){
@@ -151,7 +147,6 @@ const WNDB = {
                                	    var myTableName = this.ownerModel.tableName();
                 			        var relatedTableName = this.relatedModel.tableName();    			        			        
                 			        var tableName = [myTableName, relatedTableName].sort().join('_');
-                			        console_log('Creating join table: '+tableName);
                                     var myKey = this.ownerModel.className.toLowerCase()+'_id';
                                     var foreignKey = this.relatedModel.className.toLowerCase()+'_id';
                     

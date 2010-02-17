@@ -70,8 +70,6 @@ function Model(classFunc){
                         this.isNewRecord = false
                         // Commit any temporary relationships
                         this._commitRelationships();
-                        console_log("Inserted "+this.model.className+" "+newObjId);
-                        console_log(this.attributes);
                         if(callbackHandler){
                             callbackHandler(this);
                         }
@@ -94,8 +92,6 @@ function Model(classFunc){
                     values.push(this.getAttribute('id')*1);
                     transaction.executeSql(sqlColumns, values, function(trans, results){
                         this.setAttribute('updated_at', (new Date()).toString());
-                        console_log("Updated "+this.model.className+" "+this.getAttribute('id'));
-                        console_log(this.attributes);
                         if(callbackHandler){
                             callbackHandler(this);
                         }                        
