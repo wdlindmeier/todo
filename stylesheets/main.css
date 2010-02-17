@@ -181,12 +181,10 @@ ul.sorting{
 
 .task_list button.complete{    
 	color:#493;
-	xbackground: -webkit-gradient(linear, left top, left bottom, from(#7c6), to(#493));    
 }
 
 .editing .task_list button.delete{
 	color:#800;
-	xbackground: -webkit-gradient(linear, left top, left bottom, from(#d00), to(#800));    
 }
 
 .editing .task_list button.delete, .task_list button.complete{    

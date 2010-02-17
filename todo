@@ -1,4 +1,6 @@
 TODO:
+BUG: App doesnt work on wdlindmeier.com
+	Check if db is enabled
 tags look weird hanging on the end
 new items should get CSS highlight
 New tags get random color
