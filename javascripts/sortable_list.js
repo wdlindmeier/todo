@@ -81,19 +81,20 @@ function observeDraggableElements(callbackHandler){
 }
 
 document.observe('dom:loaded', function(){
-	document.ontouchstart = function(){	
-		// Only observe the mouse move when the mouse is down
-		document.ontouchmove = function(e){
-			if($draggedElement){			
-				var pointY = $IS_IPHONE ? e.touches[0].clientY : e.pointerY();
+	document.ontouchstart = function(e){
+		if($draggedElement){
+			e.preventDefault();	
+			// Only observe the mouse move when the mouse is down
+			document.ontouchmove = function(e){
 				e.preventDefault();											
+				var pointY = $IS_IPHONE ? e.touches[0].clientY : e.pointerY();
 				repositionDraggedElement(pointY - $draggableParentRect.y);						
 				var y = pointY - $draggableParentRect.y;				
 				var cellY = 0;
 				for(var c=0;c<$draggedPosition;c++){
 					cellY += $draggedElement.parentNode.childNodes[c].getDimensions().height;
 				}
-				
+
 				var elY = y - cellY - $draggedOffset.y;
 				// This condition prevents the li from going over the edges of the container.
 				var marginOverlap = $draggedDimensions.height * 0.5;
@@ -102,7 +103,7 @@ document.observe('dom:loaded', function(){
 					$draggedElement.style.top = elY+'px';
 				}
 			}
-		}
+		} 
 	}
 
 	document.ontouchend = function(e){
